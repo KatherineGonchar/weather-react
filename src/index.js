@@ -4,10 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <div className="App text-center">
+          <div className="container mt-5">
+              <h1>Weather Search Engine</h1>
+              <App />
+              <h2 id="weather">{""}</h2>
+          </div>
+      </div>
   </React.StrictMode>
 );
 
