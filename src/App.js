@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import './App.css';
 import axios from 'axios';
+import FormattedDate from "./FormattedDate";
+import WeatherIcon from "./WeatherIcon";
+import WeatherTemperature from "./WeatherTemperature";
 
 function App() {
   let [city, setCity] = useState("");
@@ -10,11 +13,12 @@ function App() {
   function showWeather(response) {
     setLoaded(true);
     setWeather({
+      date: new Date(response.data.dt * 1000),
       cityname: response.data.name,
       temperature: response.data.main.temp,
       wind: response.data.wind.speed,
       humidity: response.data.main.humidity,
-      icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+      icon: response.data.weather[0].icon,
       description: response.data.weather[0].description
     });
   }
@@ -51,10 +55,13 @@ function App() {
           {form}
           <ul className="list-group mt-4 mb-4">
             <li className="list-group-item">
+              <FormattedDate date={weather.date} />
+            </li>
+            <li className="list-group-item">
               City: {weather.cityname}
             </li>
             <li className="list-group-item">
-              Temperature: {Math.round(weather.temperature)}°C
+              <WeatherTemperature celsius={weather.temperature} />
             </li>
             <li className="list-group-item">
               Description: {weather.description}
@@ -62,7 +69,7 @@ function App() {
             <li className="list-group-item">Humidity: {weather.humidity}%</li>
             <li className="list-group-item">Wind: {weather.wind}km/h</li>
             <li className="list-group-item">
-              <img src={weather.icon} alt={weather.description} />
+              <WeatherIcon code={weather.icon} />
             </li>
           </ul>
         </div>
