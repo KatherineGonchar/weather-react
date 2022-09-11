@@ -4,6 +4,7 @@ import axios from 'axios';
 import FormattedDate from "./FormattedDate";
 import WeatherIcon from "./WeatherIcon";
 import WeatherTemperature from "./WeatherTemperature";
+import WeatherForecast from "./WeatherForecast";
 
 function App() {
   let [city, setCity] = useState("");
@@ -13,6 +14,7 @@ function App() {
   function showWeather(response) {
     setLoaded(true);
     setWeather({
+      coords: response.data.coord,
       date: new Date(response.data.dt * 1000),
       cityname: response.data.name,
       temperature: response.data.main.temp,
@@ -25,7 +27,7 @@ function App() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    let apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=819d2830a6cec8ee668b535af2021283&units=metric`;
+    let apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c95d60a1e3adbeb286133f1ebebc2579&units=metric`;
     axios.get(apiURL).then(showWeather);
   }
 
@@ -69,7 +71,10 @@ function App() {
             <li className="list-group-item">Humidity: {weather.humidity}%</li>
             <li className="list-group-item">Wind: {weather.wind}km/h</li>
             <li className="list-group-item">
-              <WeatherIcon code={weather.icon} />
+              <WeatherIcon code={weather.icon} size={50}/>
+            </li>
+            <li className="list-group-item">
+              <WeatherForecast coords={weather.coords} />
             </li>
           </ul>
         </div>
